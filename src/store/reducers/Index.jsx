@@ -1,16 +1,14 @@
 let initialState = {
-  register: {},
-  login: {},
+  profile: {},
+  allUsers: {},
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
-    case "REGISTER":
-      return { ...state, register: action.payload };
-
-    case "LOGIN":
-      state.login = action.payload;
-      return { ...state, login: action.payload };
+    case "PROFILE":
+      return { ...state, profile: action.payload };
+    case "ALL_USERS":
+      return { ...state, allUsers: action.payload };
 
     default:
       return state;

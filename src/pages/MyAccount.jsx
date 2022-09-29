@@ -1,35 +1,18 @@
-import BaseCard from "../components/base-components/BaseCard";
 import "./pages.css";
-import { logOut } from "../store/actions/Index";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import avatar from "../assets/user.png";
 import cancel from "../assets/cancel.png";
 import { useState } from "react";
 
-const Home = () => {
-  let navigateTo = useNavigate();
-  let userName = useSelector((state) => state?.profile?.username);
+const MyAccount = () => {
   let [dropdownIsVisible, setDropdownIsVisible] = useState(false);
 
-  let handleLogOut = () => {
-    logOut()
-      .then(() => {
-        window.localStorage.clear();
-        navigateTo("/login");
-      })
-      .catch(() => {
-        window.localStorage.clear();
-
-        navigateTo("/login");
-      });
-  };
   return (
-    <div className="min-h-screen">
-      <div className="relative bg-img bg-contain w-full h-full flex flex-col justify-start items-start pt-9 px-8">
+    <div className="min-h-screen overflow-auto bg-img bg-contain ">
+      <div className="fixed top-0 right-0 left-0 pt-9 px-8 bg-purple-900">
         <div className="relative flex justify-start items-start w-full">
-          <Link to="/my-account/all-users" className="text-white">
+          <Link to="/" className="text-white">
             View All users
           </Link>
           <div className="ml-auto">
@@ -74,26 +57,14 @@ const Home = () => {
             )}
           </div>
         </div>
-
-        <div className="min-h-screen flex justify-center items-center w-full">
-          <BaseCard>
-            <h2 className="text-xl md:text-2xl text-black font-medium">
-              Hi {userName}!
-            </h2>
-            <p className="text-sm md:text-base text-[#444444]">
-              Thank you for using our service
-            </p>
-            <button
-              className="border-none outline-none mt-4 text-[#4834D4] font-medium"
-              onClick={handleLogOut}
-            >
-              Logout
-            </button>
-          </BaseCard>
+      </div>
+      <div className="w-full h-full flex flex-col justify-start items-start pt-28 px-2">
+        <div>
+          <Outlet />
         </div>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default MyAccount;

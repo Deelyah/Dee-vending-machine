@@ -30,7 +30,7 @@ const Register = () => {
       .then((res) => {
         setIsLoading(false);
         window.localStorage.setItem("IS_AUTHENTICATED", true);
-        dispatch({ type: "REGISTER", payload: { ...res.data } });
+        dispatch({ type: "PROFILE", payload: { ...res.data } });
         navigateTo("/");
         window.localStorage.setItem("token", res.data.token);
       })
