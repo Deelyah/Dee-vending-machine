@@ -1,9 +1,8 @@
 import BaseCard from "../components/base-components/BaseCard";
 import "./pages.css";
-import logo from "../assets/logo.png";
 import visible from "../assets/open.png";
 import hidden from "../assets/close.png";
-import { login } from "../store/actions/Index";
+import { login, register } from "../store/actions/Index";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -27,17 +26,17 @@ const Register = () => {
   let handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    login(userDetails)
+    register(userDetails)
       .then((res) => {
-        window.localStorage.setItem("IS_AUTHENTICATED", true);
         setIsLoading(false);
-        dispatch({ type: "LOGIN", payload: { ...res.data } });
-        window.localStorage.setItem("userName", res.data.data.user.name);
+        window.localStorage.setItem("IS_AUTHENTICATED", true);
+        dispatch({ type: "REGISTER", payload: { ...res.data } });
         navigateTo("/");
+        window.localStorage.setItem("token", res.data.token);
       })
       .catch((error) => {
         setIsLoading(false);
-        toast.error(error.response.data.message, {
+        toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
       });
@@ -47,20 +46,12 @@ const Register = () => {
     <div className="">
       <ToastContainer />
       <div className="bg-img bg-contain w-full min-h-screen flex flex-col justify-center items-center sm:pt-10">
-        <div className="flex justify-center mt-6">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-44 h-10 max-w-[215px] max-h-[74px]"
-          />
-        </div>
-
         <BaseCard>
           <h2 className="text-xl md:text-2xl text-black font-medium text-center">
             Hello There!
           </h2>
           <p className="text-sm md:text-base text-[#444444] text-center">
-            Register to access our vending machine
+            Register as a buyer or seller
           </p>
           <form
             onSubmit={(e) => {
@@ -69,14 +60,14 @@ const Register = () => {
             className="py-[26px]"
           >
             <div>
-              <label htmlFor="userRole" className="text-[#13113f] ">
+              <label htmlFor="role" className="text-[#13113f] ">
                 Role
               </label>
               <input
                 required
                 type="text"
-                name="userRole"
-                id="userRole"
+                name="role"
+                id="role"
                 onChange={(e) => {
                   handleInputChange(e);
                 }}

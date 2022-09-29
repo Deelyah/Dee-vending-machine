@@ -1,9 +1,8 @@
 import BaseCard from "../components/base-components/BaseCard";
 import "./pages.css";
-import logo from "../assets/logo.png";
 import visible from "../assets/open.png";
 import hidden from "../assets/close.png";
-import { login } from "../store/actions/Index";
+import { login, logOutFromAllDevices } from "../store/actions/Index";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -24,6 +23,16 @@ const Login = () => {
     });
   };
 
+  let clearActiveSessions = () => {
+    logOutFromAllDevices({ username: userDetails.username })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   let handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -37,24 +46,29 @@ const Login = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        toast.error(error.response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        error.response.data.message ===
+        "There is already an active session using your account"
+          ? toast.error("Kindly log out from all devices", {
+              position: toast.POSITION.TOP_RIGHT,
+            })
+          : toast.error(error.response.data.message, {
+              position: toast.POSITION.TOP_RIGHT,
+            });
       });
   };
 
   return (
-    <div className="">
+    <div className="bg-img ">
       <ToastContainer />
-      <div className="bg-img bg-contain w-full min-h-screen flex flex-col justify-center items-center sm:pt-10">
-        <div className="flex justify-center mt-6">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-44 h-10 max-w-[215px] max-h-[74px]"
-          />
-        </div>
-
+      <div className="flex justify-end pt-2 pr-2">
+        <button
+          className="text-white text-lg font-medium rounded-md px-4 py-2"
+          onClick={clearActiveSessions}
+        >
+          Logout from all devices
+        </button>
+      </div>
+      <div className="bg-contain w-full min-h-screen flex flex-col justify-center items-center sm:pt-10">
         <BaseCard>
           <h2 className="text-xl md:text-2xl text-black font-medium text-center">
             Welcome Back!
@@ -74,7 +88,7 @@ const Login = () => {
               </label>
               <input
                 required
-                type="username"
+                type="text"
                 name="username"
                 id="username"
                 onChange={(e) => {

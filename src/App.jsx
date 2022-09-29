@@ -10,12 +10,12 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />}></Route>
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="/" element={<ProtectedRoute />}>
             <Route path="" element={<Home />} />
           </Route>
-          <Route path="register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </div>
