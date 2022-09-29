@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import MyAccount from "./pages/MyAccount";
 import AllUsers from "./components/AllUsers";
 import ViewProfile from "./components/ViewProfile";
+import UpdateProfile from "./components/UpdateProfile";
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
             <Route path="" element={<Home />} />
             <Route path="my-account/*" element={<MyAccount />}>
               <Route path="view-profile" element={<ViewProfile />} />
+              <Route path="update-profile" element={<UpdateProfile />} />
               <Route path="all-users" element={<AllUsers />} />
             </Route>
           </Route>

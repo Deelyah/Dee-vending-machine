@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import avatar from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 import BaseSpinner from "./base-components/BaseSpinner";
+import { Link } from "react-router-dom";
 const ViewProfile = () => {
   let [profile, setProfile] = useState(null);
   let userProfile = useSelector((state) => state?.profile);
@@ -27,6 +28,12 @@ const ViewProfile = () => {
               Username: {profile?.username}
             </h2>
             <p>Role: {profile?.role}</p>
+            <Link
+              to="/my-account/update-profile"
+              className="bg-[#13113f] hover:bg-[#13113fe5] text-white px-4 py-2 mt-4 rounded-sm"
+            >
+              Edit Profile
+            </Link>
           </div>
         )}
       </BaseCard>

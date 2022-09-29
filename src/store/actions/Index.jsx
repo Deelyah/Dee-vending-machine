@@ -15,6 +15,14 @@ export const getUserProfile = async (userToken) => {
     },
   });
 };
+export const updateUserProfile = async (data) => {
+  return await axios.put(`${baseURL}/user/${data.userId}`, data.userDetails, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${data.userToken}`,
+    },
+  });
+};
 export const getAllUsers = async (userToken) => {
   return await axios.get(`${baseURL}/user/`, {
     headers: {
@@ -28,4 +36,12 @@ export const logOut = async () => {
 };
 export const logOutFromAllDevices = async () => {
   return await axios.post(`${baseURL}/user/logout/all`);
+};
+export const deleteAccount = async (userData) => {
+  return await axios.delete(`${baseURL}/user/${userData[0]}`, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${userData[1]}`,
+    },
+  });
 };

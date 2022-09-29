@@ -12,7 +12,6 @@ import TheHeader from "../components/TheHeader";
 const Home = () => {
   let navigateTo = useNavigate();
   let userName = useSelector((state) => state?.profile?.username);
-  let [dropdownIsVisible, setDropdownIsVisible] = useState(false);
 
   let handleLogOut = () => {
     logOut()

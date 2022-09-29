@@ -6,14 +6,6 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen">
       <div className="relative bg-img bg-contain w-full h-full flex flex-col justify-start items-start pt-9 px-8">
-        <div className="flex justify-start items-start">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-44 h-10 max-w-[215px] max-h-[74px]"
-          />
-        </div>
-
         <div className="w-full min-h-screen flex flex-col justify-center items-center sm:pt-10">
           <BaseCard>
             <h2 className="text-base md:text-2xl text-black font-medium">
