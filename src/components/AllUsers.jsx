@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllUsers } from "../store/actions/Index";
 import BaseCard from "./base-components/BaseCard";
 import avatar from "../assets/avatar.png";
+import BaseSpinner from "./base-components/BaseSpinner";
 
 const AllUsers = () => {
   let [allUsers, setAllUsers] = useState(null);
@@ -19,10 +20,10 @@ const AllUsers = () => {
   }, []);
   return (
     <div className="w-full">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center w-full">
         {!allUsers && (
           <BaseCard>
-            <div>We have no users at the moment</div>
+            <BaseSpinner />
           </BaseCard>
         )}
 
@@ -39,7 +40,9 @@ const AllUsers = () => {
                       <div className="w-24 mb-3 h-24 rounded-full bg-[#13113f30] flex justify-center items-center">
                         <img src={avatar} alt="avatar" />
                       </div>
-                      <h2>Username: {user.username}</h2>
+                      <h2 className="font-semibold text-lg">
+                        Username: {user.username}
+                      </h2>
                       <p>Role: {user.role}</p>
                     </div>
                   </div>
