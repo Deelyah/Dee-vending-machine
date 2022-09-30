@@ -1,15 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BaseCard from "../../components/base-components/BaseCard";
 import BaseSpinner from "../../components/base-components/BaseSpinner";
-import { createProduct } from "../../store/actions/Index";
+import {
+  getProductById,
+  getSellersProducts,
+  updateProduct,
+} from "../../store/actions/Index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-const AddProduct = () => {
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+const EditProduct = () => {
   const navigateTo = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [productDetails, setProductDetails] = useState({});
+  const [productDetails, setProductDetails] = useState({
+    productName: product?.productName,
+    cost: product?.cost,
+    description: product?.description,
+    amountAvailable: product?.amountAvailable,
+  });
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    getProductById({ token: token, id: id })
+      .then((res) => {
+        setProduct(res.data);
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   const handleInputChange = (e) => {
     setProductDetails((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
@@ -29,13 +54,22 @@ const AddProduct = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else {
-      createProduct({ token: token, details: productDetails })
+      updateProduct({ token: token, details: productDetails, id: id })
         .then(() => {
-          setIsLoading(false);
-          toast.success("Product Created", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          navigateTo("/my-account/my-products");
+          getSellersProducts(token)
+            .then((res) => {
+              dispatch({ type: "SELLERS_PRODUCT", payload: res.data });
+              setIsLoading(false);
+              toast.success("Product Updated", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+              setTimeout(() => {
+                navigateTo("/my-account/my-products");
+              }, 1000);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((error) => {
           setIsLoading(false);
@@ -59,7 +93,7 @@ const AddProduct = () => {
     <BaseCard>
       <ToastContainer />
       <h2 className="text-xl md:text-2xl text-black font-medium text-center">
-        Create Product
+        Edit Product
       </h2>
       <form
         onSubmit={(e) => {
@@ -72,6 +106,7 @@ const AddProduct = () => {
           <input
             required
             type="text"
+            value={productDetails?.productName}
             className="focus:outline-none w-full border rounded px-3 py-2"
             name="productName"
             id="productName"
@@ -86,6 +121,7 @@ const AddProduct = () => {
           <input
             required
             type="text"
+            value={productDetails?.description}
             className="focus:outline-none w-full border rounded px-3 py-2"
             name="description"
             id="description"
@@ -99,7 +135,7 @@ const AddProduct = () => {
           <input
             required
             type="number"
-            placeholder="Must be a multiple of 5"
+            value={productDetails?.cost}
             className="focus:outline-none w-full border rounded px-3 py-2"
             name="cost"
             id="cost"
@@ -113,7 +149,7 @@ const AddProduct = () => {
           <input
             required
             type="number"
-            placeholder="Must be less than 10"
+            value={productDetails?.amountAvailable}
             className="focus:outline-none w-full border rounded px-3 py-2"
             name="amountAvailable"
             id="amountAvailable"
@@ -124,7 +160,7 @@ const AddProduct = () => {
         </div>
         <div className="w-full">
           <button className="w-1/2 flex justify-center items-center text-sm text-white bg-[#4834D4] py-2 md:py-3 mt-11 rounded-lg">
-            {isLoading ? <BaseSpinner /> : "Create"}
+            {isLoading ? <BaseSpinner /> : "Save"}
           </button>
         </div>
       </form>
@@ -132,4 +168,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

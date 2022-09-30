@@ -11,6 +11,7 @@ import ViewProfile from "./components/user/ViewProfile";
 import UpdateProfile from "./components/user/UpdateProfile";
 import SellersProucts from "./pages/products/SellersProducts";
 import AddProduct from "./pages/products/AddProduct";
+import EditProduct from "./pages/products/EditProduct";
 function App() {
   return (
     <div className="App">
@@ -26,6 +27,7 @@ function App() {
               <Route path="update-profile" element={<UpdateProfile />} />
               <Route path="all-users" element={<AllUsers />} />
               <Route path="my-products" element={<SellersProucts />} />
+              <Route path="edit-product/:id" element={<EditProduct />} />
               <Route path="add-product" element={<AddProduct />} />
             </Route>
           </Route>

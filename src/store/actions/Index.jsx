@@ -61,8 +61,27 @@ export const getSellersProducts = async (userToken) => {
     },
   });
 };
+
+export const getProductById = async (product) => {
+  return await axios.get(`${baseURL}/product/${product.id}`, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${product.token}`,
+    },
+  });
+};
+
 export const createProduct = async (product) => {
   return await axios.post(`${baseURL}/product`, product.details, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${product.token}`,
+    },
+  });
+};
+
+export const updateProduct = async (product) => {
+  return await axios.put(`${baseURL}/product/${product.id}`, product.details, {
     headers: {
       "Content-Type": "Application/JSON",
       Authorization: `Bearer ${product.token}`,

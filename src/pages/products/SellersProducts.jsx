@@ -32,7 +32,7 @@ const SellersProucts = () => {
           <BaseSpinner></BaseSpinner>
         </BaseCard>
       )}
-      {!isLoading && !products && (
+      {!isLoading && (!products?.length === 0 || !products) && (
         <BaseCard>
           <div className="flex flex-col items-center justify-center">
             <h2 className="font-semibold text-lg mb-4">
@@ -48,20 +48,26 @@ const SellersProucts = () => {
           </div>
         </BaseCard>
       )}
-      {!isLoading && products && (
+      {!isLoading && products && products?.length !== 0 && (
         <>
           <div className="flex flex-wrap w-full justify-center">
-            {products.map((product, index) => {
+            {products?.map((product, index) => {
               return (
                 <div key={index} className="px-4 mb-8 basis-1/4">
-                  <div className="bg-white w-full px-2 py-4 rounded-lg min-h-[200px] flex flex-col justify-center items-center">
+                  <div className="bg-white w-full px-2 pt-4 rounded-lg min-h-[200px] flex flex-col justify-center items-center">
                     <h2 className="font-semibold text-2xl text-center">
                       {product?.productName}
                     </h2>
                     <p className="font-medium text-center">
                       {product?.description}
                     </p>
-                    <p className="font-medium text-center"> {product?.cost}</p>
+                    <p className="font-medium text-center"> ₦{product?.cost}</p>
+                    <Link
+                      to={`/my-account/edit-product/${product._id}`}
+                      className="font-medium my-4 px-4 py-1 rounded border hover:border-[#4834D4]"
+                    >
+                      Edit
+                    </Link>
                   </div>
                 </div>
               );
