@@ -4,26 +4,34 @@ import cancel from "../assets/cancel.png";
 import { useState } from "react";
 import { deleteAccount } from "../store/actions/Index";
 import { useSelector } from "react-redux";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const TheHeader = () => {
   let [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const userId = useSelector((state) => state?.profile?.id);
   const token = localStorage.getItem("token");
   const navigateTo = useNavigate();
-  let deleteUserAccount = (res) => {
-    console.log(res);
+  let deleteUserAccount = () => {
     deleteAccount([userId, token])
       .then(() => {
         localStorage.clear();
-        navigateTo("/register");
+        toast.success("Account Deleted", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setTimeout(() => {
+          navigateTo("/register");
+        }, 1200);
       })
       .catch((e) => {
-        console.log(e);
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
   };
 
   return (
     <div className="fixed top-0 right-0 left-0 pt-9 px-8 bg-[#130F40]">
+      <ToastContainer />
       <div className="relative flex justify-start items-start w-full">
         <Link to="/" className="text-white">
           Home

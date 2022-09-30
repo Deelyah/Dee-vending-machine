@@ -7,7 +7,7 @@ const MyAccount = () => {
     <div className="min-h-screen overflow-auto bg-img bg-contain ">
       <TheHeader />
       <div className="w-full pt-28 px-2">
-        <div className="h-full flex flex-col justify-center items-center">
+        <div className="h-full w-full flex flex-col justify-center items-center">
           <Outlet />
         </div>
       </div>

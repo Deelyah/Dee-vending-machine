@@ -10,11 +10,12 @@ import { useState } from "react";
 import TheHeader from "../components/TheHeader";
 
 const Home = () => {
-  let navigateTo = useNavigate();
-  let userName = useSelector((state) => state?.profile?.username);
+  const navigateTo = useNavigate();
+  const userName = useSelector((state) => state?.profile?.username);
+  const token = localStorage.getItem("token");
 
-  let handleLogOut = () => {
-    logOut()
+  const handleLogOut = () => {
+    logOut(token)
       .then(() => {
         window.localStorage.clear();
         navigateTo("/login");

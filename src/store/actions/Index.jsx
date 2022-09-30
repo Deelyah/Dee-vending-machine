@@ -31,8 +31,13 @@ export const getAllUsers = async (userToken) => {
     },
   });
 };
-export const logOut = async () => {
-  return await axios.get(`${baseURL}/user/logout/`);
+export const logOut = async (userToken) => {
+  return await axios.get(`${baseURL}/user/logout/`, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
 };
 export const logOutFromAllDevices = async () => {
   return await axios.post(`${baseURL}/user/logout/all`);
@@ -49,10 +54,18 @@ export const deleteAccount = async (userData) => {
 // PRODUCTS
 
 export const getSellersProducts = async (userToken) => {
-  return await axios.get(`${baseURL}/product/seller`, {
+  return await axios.post(`${baseURL}/product/seller`, "", {
     headers: {
       "Content-Type": "Application/JSON",
       Authorization: `Bearer ${userToken}`,
+    },
+  });
+};
+export const createProduct = async (product) => {
+  return await axios.post(`${baseURL}/product`, product.details, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${product.token}`,
     },
   });
 };
