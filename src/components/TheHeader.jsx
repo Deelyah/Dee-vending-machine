@@ -28,6 +28,9 @@ const TheHeader = () => {
         <Link to="/" className="text-white">
           Home
         </Link>
+        <Link to="/my-account/my-products" className="ml-4 text-white">
+          My Products
+        </Link>
         <div className="ml-auto">
           <button
             onClick={() => {

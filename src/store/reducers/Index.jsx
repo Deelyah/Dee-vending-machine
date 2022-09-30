@@ -1,6 +1,7 @@
 let initialState = {
   profile: {},
   allUsers: {},
+  sellersProduct: {},
 };
 
 const reducers = (state = initialState, action) => {
@@ -9,7 +10,8 @@ const reducers = (state = initialState, action) => {
       return { ...state, profile: action.payload };
     case "ALL_USERS":
       return { ...state, allUsers: action.payload };
-
+    case "SELLERS_PRODUCT":
+      return { ...state, sellersProduct: action.payload };
     default:
       return state;
   }

@@ -7,8 +7,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import MyAccount from "./pages/MyAccount";
 import AllUsers from "./components/AllUsers";
-import ViewProfile from "./components/ViewProfile";
-import UpdateProfile from "./components/UpdateProfile";
+import ViewProfile from "./components/user/ViewProfile";
+import UpdateProfile from "./components/user/UpdateProfile";
+import SellersProucts from "./pages/products/SellersProducts";
 function App() {
   return (
     <div className="App">
@@ -23,6 +24,7 @@ function App() {
               <Route path="view-profile" element={<ViewProfile />} />
               <Route path="update-profile" element={<UpdateProfile />} />
               <Route path="all-users" element={<AllUsers />} />
+              <Route path="my-products" element={<SellersProucts />} />
             </Route>
           </Route>
         </Routes>

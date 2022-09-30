@@ -1,8 +1,8 @@
-import BaseCard from "./base-components/BaseCard";
+import BaseCard from "../base-components/BaseCard";
 import { useEffect, useState } from "react";
-import avatar from "../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 import { useSelector } from "react-redux";
-import BaseSpinner from "./base-components/BaseSpinner";
+import BaseSpinner from "../base-components/BaseSpinner";
 import { Link } from "react-router-dom";
 const ViewProfile = () => {
   let [profile, setProfile] = useState(null);

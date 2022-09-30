@@ -45,3 +45,14 @@ export const deleteAccount = async (userData) => {
     },
   });
 };
+
+// PRODUCTS
+
+export const getSellersProducts = async (userToken) => {
+  return await axios.get(`${baseURL}/product/seller`, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+};
