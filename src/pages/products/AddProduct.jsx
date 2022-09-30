@@ -30,13 +30,13 @@ const AddProduct = () => {
       });
     } else {
       createProduct({ token: token, details: productDetails })
-        .then((res) => {
+        .then(() => {
           setIsLoading(false);
           toast.success("Product Created", {
             position: toast.POSITION.TOP_CENTER,
           });
           setTimeout(() => {
-            navigateTo("/my-account/my-product");
+            navigateTo("/my-account/my-products");
           }, 1000);
         })
         .catch((error) => {

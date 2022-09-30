@@ -18,13 +18,11 @@ const SellersProucts = () => {
     getSellersProducts(token)
       .then((res) => {
         setIsLoading(false);
-        console.log(res.data);
         dispatch({ type: "SELLERS_PRODUCT", payload: res.data });
         setProducts(res.data);
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
       });
   }, []);
   return (

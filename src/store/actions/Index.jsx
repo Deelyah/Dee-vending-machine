@@ -39,8 +39,8 @@ export const logOut = async (userToken) => {
     },
   });
 };
-export const logOutFromAllDevices = async () => {
-  return await axios.post(`${baseURL}/user/logout/all`);
+export const logOutFromAllDevices = async (username) => {
+  return await axios.post(`${baseURL}/user/logout/all`, username);
 };
 export const deleteAccount = async (userData) => {
   return await axios.delete(`${baseURL}/user/${userData[0]}`, {

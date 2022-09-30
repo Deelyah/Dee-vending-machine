@@ -11,9 +11,8 @@ const ProtectedRoute = () => {
     getUserProfile(userToken)
       .then((res) => {
         dispatch({ type: "PROFILE", payload: res.data });
-        console.log(res);
       })
-      .then((err) => {
+      .catch((err) => {
         console.log(err);
       });
   });

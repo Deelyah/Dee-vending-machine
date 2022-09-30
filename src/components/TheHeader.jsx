@@ -33,11 +33,23 @@ const TheHeader = () => {
     <div className="fixed top-0 right-0 left-0 pt-9 px-8 bg-[#130F40]">
       <ToastContainer />
       <div className="relative flex justify-start items-start w-full">
-        <Link to="/" className="text-white">
+        <Link
+          to="/"
+          className="text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+        >
           Home
         </Link>
-        <Link to="/my-account/my-products" className="ml-4 text-white">
+        <Link
+          to="/my-account/my-products"
+          className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+        >
           My Products
+        </Link>
+        <Link
+          to="/my-account/add-product"
+          className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+        >
+          Create new product
         </Link>
         <div className="ml-auto">
           <button
