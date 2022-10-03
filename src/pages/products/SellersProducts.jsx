@@ -4,7 +4,7 @@ import BaseCard from "../../components/base-components/BaseCard";
 import { deleteProduct, getSellersProducts } from "../../store/actions/Index";
 import { Link } from "react-router-dom";
 import BaseSpinner from "../../components/base-components/BaseSpinner";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const SellersProucts = () => {
   const dispatch = useDispatch();
@@ -49,7 +49,6 @@ const SellersProucts = () => {
   };
   return (
     <>
-      <ToastContainer />
       {isLoading && (
         <BaseCard>
           <BaseSpinner></BaseSpinner>
@@ -85,9 +84,9 @@ const SellersProucts = () => {
                       {product?.description}
                     </p>
                     <p className="font-medium text-center"> ₦{product?.cost}</p>
-                    <div className="">
+                    <div>
                       <Link
-                        to={`/my-account/edit-product/${product._id}`}
+                        to={`/my-account/seller/edit-product/${product._id}`}
                         className="font-medium my-4 mr-4 px-4 py-1 rounded border hover:border-[#4834D4]"
                       >
                         Edit

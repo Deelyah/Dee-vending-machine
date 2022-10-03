@@ -12,8 +12,8 @@ import UpdateProfile from "./components/user/UpdateProfile";
 import SellersProucts from "./pages/products/SellersProducts";
 import AddProduct from "./pages/products/AddProduct";
 import EditProduct from "./pages/products/EditProduct";
-import BuyersRoute from "./components/BuyersRoute";
 import SellersRoute from "./components/SellersRoute";
+import VendingMachine from "./pages/VendingMachine";
 function App() {
   return (
     <div className="App">
@@ -28,7 +28,7 @@ function App() {
               <Route path="view-profile" element={<ViewProfile />} />
               <Route path="update-profile" element={<UpdateProfile />} />
               <Route path="all-users" element={<AllUsers />} />
-              <Route path="buyer" element={<BuyersRoute />}></Route>
+              <Route path="vending-machine" element={<VendingMachine />} />
               <Route path="seller/*" element={<SellersRoute />}>
                 <Route path="my-products" element={<SellersProucts />} />
                 <Route path="edit-product/:id" element={<EditProduct />} />

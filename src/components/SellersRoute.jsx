@@ -4,13 +4,7 @@ import { Navigate } from "react-router-dom";
 const SellersRoute = () => {
   const userRole = useSelector((state) => state?.profile?.role);
   return (
-    <>
-      {userRole === "seller" ? (
-        <Outlet />
-      ) : (
-        <Navigate to="/my-account/buyer"></Navigate>
-      )}
-    </>
+    <>{userRole === "seller" ? <Outlet /> : <Navigate to=""></Navigate>}</>
   );
 };
 

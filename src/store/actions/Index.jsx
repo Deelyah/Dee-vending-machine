@@ -71,6 +71,10 @@ export const getProductById = async (product) => {
   });
 };
 
+export const getAllProducts = async () => {
+  return await axios.get(`${baseURL}/product`);
+};
+
 export const createProduct = async (product) => {
   return await axios.post(`${baseURL}/product`, product.details, {
     headers: {

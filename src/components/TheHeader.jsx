@@ -40,21 +40,28 @@ const TheHeader = () => {
         >
           Home
         </Link>
-        {userRole === "seller" && (
+        {userRole === "seller" ? (
           <>
             <Link
               to="/my-account/seller/my-products"
               className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
             >
-              My Products
+              {userRole ? "My Products" : ""}
             </Link>
             <Link
               to="/my-account/seller/add-product"
               className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
             >
-              Create new product
+              {userRole ? "Create new product" : ""}
             </Link>
           </>
+        ) : (
+          <Link
+            to="/my-account/vending-machine"
+            className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+          >
+            {userRole ? "Start Shopping" : ""}
+          </Link>
         )}
         <div className="ml-auto">
           <button

@@ -14,13 +14,12 @@ const EditProduct = () => {
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [productDetails, setProductDetails] = useState({
-    productName: product?.productName,
-    cost: product?.cost,
-    description: product?.description,
-    amountAvailable: product?.amountAvailable,
+    productName: "",
+    cost: "",
+    description: "",
+    amountAvailable: "",
   });
   const token = localStorage.getItem("token");
 
@@ -28,7 +27,6 @@ const EditProduct = () => {
     getProductById({ token: token, id: id })
       .then((res) => {
         setProductDetails(res.data);
-        console.log(product);
       })
       .catch((e) => {
         console.log(e);
