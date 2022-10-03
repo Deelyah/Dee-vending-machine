@@ -134,7 +134,7 @@ const TheHeader = () => {
                 }}
               >
                 <Link
-                  to="/my-account/all-users"
+                  to="/my-account/seller/add-product"
                   className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
                 >
                   Create product
