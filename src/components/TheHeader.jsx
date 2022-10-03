@@ -11,6 +11,7 @@ const TheHeader = () => {
   const userId = useSelector((state) => state?.profile?.id);
   const token = localStorage.getItem("token");
   const navigateTo = useNavigate();
+  const userRole = useSelector((state) => state?.profile?.role);
   let deleteUserAccount = () => {
     deleteAccount([userId, token])
       .then(() => {
@@ -39,18 +40,22 @@ const TheHeader = () => {
         >
           Home
         </Link>
-        <Link
-          to="/my-account/my-products"
-          className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
-        >
-          My Products
-        </Link>
-        <Link
-          to="/my-account/add-product"
-          className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
-        >
-          Create new product
-        </Link>
+        {userRole === "seller" && (
+          <>
+            <Link
+              to="/my-account/seller/my-products"
+              className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+            >
+              My Products
+            </Link>
+            <Link
+              to="/my-account/seller/add-product"
+              className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+            >
+              Create new product
+            </Link>
+          </>
+        )}
         <div className="ml-auto">
           <button
             onClick={() => {

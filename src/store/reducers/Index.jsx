@@ -1,7 +1,7 @@
 let initialState = {
   profile: {},
   allUsers: {},
-  sellersProduct: {},
+  sellersProduct: [],
 };
 
 const reducers = (state = initialState, action) => {

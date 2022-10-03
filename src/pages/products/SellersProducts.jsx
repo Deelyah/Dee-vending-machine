@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BaseCard from "../../components/base-components/BaseCard";
-import { getSellersProducts } from "../../store/actions/Index";
+import { deleteProduct, getSellersProducts } from "../../store/actions/Index";
 import { Link } from "react-router-dom";
 import BaseSpinner from "../../components/base-components/BaseSpinner";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const SellersProucts = () => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const profile = useSelector((state) => {
     return state?.profile;
+  });
+  const products = useSelector((state) => {
+    return state?.sellersProduct;
   });
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -19,20 +22,40 @@ const SellersProucts = () => {
       .then((res) => {
         setIsLoading(false);
         dispatch({ type: "SELLERS_PRODUCT", payload: res.data });
-        setProducts(res.data);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsLoading(false);
       });
   }, []);
+
+  const handleDelete = (id) => {
+    deleteProduct({ id: id, token: token })
+      .then(() => {
+        getSellersProducts(token)
+          .then((res) => {
+            setIsLoading(false);
+            dispatch({ type: "SELLERS_PRODUCT", payload: res.data });
+            toast.success("Product Deleted", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
+      <ToastContainer />
       {isLoading && (
         <BaseCard>
           <BaseSpinner></BaseSpinner>
         </BaseCard>
       )}
-      {!isLoading && (!products?.length === 0 || !products) && (
+      {!isLoading && (products?.length === 0 || !products) && (
         <BaseCard>
           <div className="flex flex-col items-center justify-center">
             <h2 className="font-semibold text-lg mb-4">
@@ -40,7 +63,7 @@ const SellersProucts = () => {
             </h2>
             <p>Don't worry, we've got you!</p>
             <Link
-              to="/my-account/add-product"
+              to="/my-account/seller/add-product"
               className="bg-[#13113f] hover:bg-[#13113fe5] text-white px-4 py-2 mt-4 rounded-sm"
             >
               Add Products here
@@ -62,12 +85,22 @@ const SellersProucts = () => {
                       {product?.description}
                     </p>
                     <p className="font-medium text-center"> ₦{product?.cost}</p>
-                    <Link
-                      to={`/my-account/edit-product/${product._id}`}
-                      className="font-medium my-4 px-4 py-1 rounded border hover:border-[#4834D4]"
-                    >
-                      Edit
-                    </Link>
+                    <div className="">
+                      <Link
+                        to={`/my-account/edit-product/${product._id}`}
+                        className="font-medium my-4 mr-4 px-4 py-1 rounded border hover:border-[#4834D4]"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        className="font-medium my-4 px-4 py-1 rounded border hover:bg-red-600 hover:text-white"
+                        onClick={() => {
+                          handleDelete(product?._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -75,7 +108,7 @@ const SellersProucts = () => {
           </div>
           <div className="flex justify-center">
             <Link
-              to="/my-account/add-product"
+              to="/my-account/seller/add-product"
               className="text-[#13113f] hover:bg-[#dbd1d1] bg-white border px-4 py-2 mt-4 rounded-sm"
             >
               Add More Products here

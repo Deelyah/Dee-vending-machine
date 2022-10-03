@@ -27,8 +27,8 @@ const EditProduct = () => {
   useEffect(() => {
     getProductById({ token: token, id: id })
       .then((res) => {
-        setProduct(res.data);
-        console.log(res);
+        setProductDetails(res.data);
+        console.log(product);
       })
       .catch((e) => {
         console.log(e);
@@ -64,7 +64,7 @@ const EditProduct = () => {
                 position: toast.POSITION.TOP_CENTER,
               });
               setTimeout(() => {
-                navigateTo("/my-account/my-products");
+                navigateTo("/my-account/seller/my-products");
               }, 1000);
             })
             .catch((err) => {

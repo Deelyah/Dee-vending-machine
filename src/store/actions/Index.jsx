@@ -88,3 +88,12 @@ export const updateProduct = async (product) => {
     },
   });
 };
+
+export const deleteProduct = async (product) => {
+  return await axios.delete(`${baseURL}/product/${product.id}`, {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${product.token}`,
+    },
+  });
+};

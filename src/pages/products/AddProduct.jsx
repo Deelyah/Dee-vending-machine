@@ -35,7 +35,7 @@ const AddProduct = () => {
           toast.success("Product Created", {
             position: toast.POSITION.TOP_CENTER,
           });
-          navigateTo("/my-account/my-products");
+          navigateTo("/my-account/seller/my-products");
         })
         .catch((error) => {
           setIsLoading(false);
