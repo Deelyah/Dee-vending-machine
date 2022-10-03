@@ -55,7 +55,7 @@ const TheHeader = () => {
             </Link>
             <Link
               to="/my-account/seller/add-product"
-              className="ml-2 md:ml-5 text-white text-sm md:text-base border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+              className="hidden md:inline ml-2 md:ml-5 text-white text-sm md:text-base border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
             >
               {profile?.role ? "Create new product" : ""}
             </Link>
@@ -80,7 +80,7 @@ const TheHeader = () => {
             <img src={menu} alt="menu" />
           </button>
           {dropdownIsVisible && (
-            <ul className="bg-white absolute top-8 right-0 md:-right-5 rounded-md w-2/3 md:w-1/6 z-90">
+            <ul className="bg-white absolute top-8 right-0 md:-right-5 rounded-md w-fit z-90">
               <li className="flex justify-end pt-4 pr-4">
                 <button
                   className="p-2 hover:bg-[#13113f30] rounded"
@@ -98,7 +98,7 @@ const TheHeader = () => {
               >
                 <Link
                   to="/my-account/view-profile"
-                  className="px-7 py-4 block hover:bg-[#13113f30]"
+                  className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
                 >
                   View Profile
                 </Link>
@@ -110,7 +110,7 @@ const TheHeader = () => {
               >
                 <Link
                   to="/my-account/update-profile"
-                  className="px-7 py-4 block hover:bg-[#13113f30]"
+                  className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
                 >
                   Update Profile
                 </Link>
@@ -122,9 +122,34 @@ const TheHeader = () => {
               >
                 <Link
                   to="/my-account/all-users"
-                  className="px-7 py-4 block hover:bg-[#13113f30]"
+                  className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
                 >
                   View All Users
+                </Link>
+              </li>
+              <li
+                className="md:hidden"
+                onClick={() => {
+                  setDropdownIsVisible(false);
+                }}
+              >
+                <Link
+                  to="/my-account/all-users"
+                  className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
+                >
+                  Create product
+                </Link>
+              </li>
+              <li
+                onClick={() => {
+                  setDropdownIsVisible(false);
+                }}
+              >
+                <Link
+                  to="/my-account/vending-machine"
+                  className="pl-7 pr-16  py-4 block hover:bg-[#13113f30]"
+                >
+                  View All Products
                 </Link>
               </li>
               <li
@@ -132,7 +157,7 @@ const TheHeader = () => {
                   deleteUserAccount();
                   setDropdownIsVisible(false);
                 }}
-                className="px-7 py-4 block cursor-pointer hover:bg-red-600 rounded-b hover:text-white"
+                className="pl-7 pr-16  py-4 block cursor-pointer hover:bg-red-600 rounded-b hover:text-white"
               >
                 Delete Account
               </li>
