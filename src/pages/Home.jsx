@@ -1,17 +1,17 @@
 import BaseCard from "../components/base-components/BaseCard";
 import "./pages.css";
-import logo from "../assets/logo.png";
 import { logOut } from "../store/actions/Index";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import TheHeader from "../components/TheHeader";
 
 const Home = () => {
-  let navigateTo = useNavigate();
-  let userName = useSelector((state) => state?.login?.data?.user?.name);
+  const navigateTo = useNavigate();
+  const userName = useSelector((state) => state?.profile?.username);
+  const token = localStorage.getItem("token");
 
-  let backUpUserName = window.localStorage.getItem("userName");
-  let handleLogOut = () => {
-    logOut()
+  const handleLogOut = () => {
+    logOut(token)
       .then(() => {
         window.localStorage.clear();
         navigateTo("/login");
@@ -23,20 +23,14 @@ const Home = () => {
       });
   };
   return (
-    <div className="h-screen">
-      <div className="relative bg-img bg-contain w-full h-full flex flex-col justify-start items-start pt-9 px-8">
-        <div className="flex justify-start items-start">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-44 h-10 max-w-[215px] max-h-[74px]"
-          />
-        </div>
+    <div className="min-h-screen">
+      <div className="bg-img bg-contain w-full h-full flex flex-col justify-start items-start pt-9 px-8">
+        <TheHeader />
 
-        <div className="fixed bottom-10 right-0 md:bottom-[60px] md:right-[60px]">
+        <div className="min-h-screen flex justify-center items-center w-full">
           <BaseCard>
             <h2 className="text-xl md:text-2xl text-black font-medium">
-              Hi {userName ? userName : backUpUserName}!
+              Hi {userName}!
             </h2>
             <p className="text-sm md:text-base text-[#444444]">
               Thank you for using our service
