@@ -2,7 +2,7 @@ import BaseCard from "../components/base-components/BaseCard";
 import "./pages.css";
 import visible from "../assets/open.png";
 import hidden from "../assets/close.png";
-import { login, register } from "../store/actions/Index";
+import { register } from "../store/actions/Index";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState } from "react";

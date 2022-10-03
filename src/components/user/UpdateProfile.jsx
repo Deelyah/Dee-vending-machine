@@ -90,7 +90,6 @@ const UpdateProfile = () => {
                   className="w-full flex justify-center items-center text-white bg-[#4834D4] py-3 md:py-4 mt-11 rounded-lg"
                   onClick={(e) => {
                     e.preventDefault();
-                    console.log(userDetails.username);
                     if (userDetails.username) {
                       setEnterPassword(true);
                     } else {

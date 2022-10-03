@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import present1 from "../assets/present1.jpg";
 import present2 from "../assets/present2.jpg";
 import present3 from "../assets/present3.jpg";
@@ -8,12 +7,16 @@ import present4 from "../assets/present4.jpg";
 import present5 from "../assets/present5.jpg";
 import present6 from "../assets/present6.jpg";
 import {
+  buyAProduct,
   getAllProducts,
   getUserProfile,
   resetAccountBalance,
 } from "../store/actions/Index";
 import BaseSpinner from "../components/base-components/BaseSpinner";
 import BaseCard from "../components/base-components/BaseCard";
+import InfoPopup from "./InfoPopup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const VendingMachine = () => {
   const dispatch = useDispatch();
@@ -27,11 +30,42 @@ const VendingMachine = () => {
     present3,
   ];
   const [isLoading, setIsLoading] = useState(false);
+  const [isReseting, setIsReseting] = useState(false);
   const [popUpIsVisible, setPopUpIsVisible] = useState(false);
   const accountBalance = useSelector((state) => state?.profile.deposit);
   const allProducts = useSelector((state) => state?.allProducts);
   const [selectedProduct, setSelectedProduct] = useState({});
   const token = localStorage.getItem("token");
+  const [sizeError, setSizeError] = useState(null);
+  const [numberOfItems, setNumberOfItems] = useState(1);
+  const increaseNumberOfItems = () => {
+    setNumberOfItems(() => {
+      if (numberOfItems > selectedProduct.amountAvailable - 1) {
+        setSizeError(
+          `There are only ${selectedProduct.amountAvailable} ${selectedProduct.productName}`
+        );
+        setTimeout(() => {
+          setSizeError(null);
+        }, 3000);
+        return numberOfItems;
+      } else {
+        return numberOfItems + 1;
+      }
+    });
+  };
+  const reduceNumberOfItems = () => {
+    setNumberOfItems(() => {
+      if (numberOfItems === 1) {
+        setSizeError("You must have at least 1 item");
+        setTimeout(() => {
+          setSizeError(null);
+        }, 3000);
+        return numberOfItems;
+      } else {
+        return numberOfItems - 1;
+      }
+    });
+  };
   useEffect(() => {
     setIsLoading(true);
     getAllProducts()
@@ -50,22 +84,50 @@ const VendingMachine = () => {
     setSelectedProduct(allProducts[index]);
   };
 
-  const closeDropdown = (e) => {
+  const closeDropdown = () => {
+    setNumberOfItems(1);
     setPopUpIsVisible(false);
-    console.log(popUpIsVisible);
   };
 
-  const buyProduct = () => {};
+  const buyProduct = () => {
+    buyAProduct({
+      id: selectedProduct._id,
+      token: token,
+      amount: numberOfItems,
+    })
+      .then(() => {
+        getUserProfile(token).then((res) => {
+          dispatch({ type: "PROFILE", payload: res.data });
+          setPopUpIsVisible(false);
+          setNumberOfItems(1);
+          toast.success("Successful!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        });
+      })
+      .catch((error) => {
+        setPopUpIsVisible(false);
+        setNumberOfItems(1);
+        toast.error(error?.response?.data?.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   const resetBalance = () => {
+    setIsReseting(true);
     resetAccountBalance(token)
       .then(() => {
         getUserProfile(token).then((res) => {
+          setIsReseting(false);
           dispatch({ type: "PROFILE", payload: res.data });
         });
       })
       .catch((err) => {
-        console.log(err);
+        setIsReseting(false);
+        toast.error(error?.response?.data?.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 
@@ -82,12 +144,12 @@ const VendingMachine = () => {
             <div className="w-11/12 md:w-2/3 h-screen overflow-auto fixed justify-center">
               <div className="bg-gray-200 rounded-xl pb-10">
                 <div className="sticky top-0 px-3 py-2 bg-gray-200 flex items-center">
-                  <h3>Balance: ${accountBalance}</h3>
+                  <h3>Balance: ¢{accountBalance}</h3>
                   <button
                     onClick={resetBalance}
                     className="ml-auto font-medium bg-[#4834D4] text-white px-4 py-1 rounded border hover:border-[#5742e2]"
                   >
-                    Reset Balance
+                    {isReseting ? <BaseSpinner /> : "Reset Balance"}
                   </button>
                 </div>
                 <div className="p-5 flex flex-wrap justify-center w-full">
@@ -114,7 +176,7 @@ const VendingMachine = () => {
                           <p className="text-center text-sm">
                             {product.description}
                           </p>
-                          <p className="text-center text-sm">${product.cost}</p>
+                          <p className="text-center text-sm">¢{product.cost}</p>
                         </div>
                         <div className="w-6 h-6 rounded-full bg-gray-200 flex justify-center">
                           <p>{product.amountAvailable}</p>
@@ -124,58 +186,16 @@ const VendingMachine = () => {
                   ))}
                   {popUpIsVisible && (
                     <>
-                      <div className="fixed inset-0 h-screen overflow-hidden bg-[#00000035] backdrop-blur-sm flex justify-center items-center">
-                        <div className="bg-white h-fit p-5 rounded-lg">
-                          {accountBalance >= selectedProduct.cost ? (
-                            <>
-                              <h5 className="font-medium text-xl mb-5">
-                                You're about to buy{" "}
-                                {selectedProduct?.productName} at $
-                                {selectedProduct?.cost}
-                              </h5>
-
-                              <div className="w-full flex justify-center">
-                                <button
-                                  className="font-medium my-4 mr-4 px-4 py-1 rounded border hover:border-[#4834D4]"
-                                  onClick={buyProduct}
-                                >
-                                  Proceed
-                                </button>{" "}
-                                <button
-                                  className="font-medium my-4 px-4 py-1 rounded border hover:bg-red-600 hover:text-white"
-                                  onClick={(e) => closeDropdown(e)}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <h5 className="font-medium text-xl mb-3 text-center">
-                                Insufficifient Funds
-                              </h5>
-                              <p className="text-sm text-center">
-                                Deposit Funds to proceed
-                              </p>
-                              <div className="w-full flex justify-center mt-3">
-                                <Link
-                                  to="/my-account/deposit"
-                                  className="font-medium my-4 mr-4 px-4 py-1 rounded border hover:border-[#4834D4]"
-                                  onClick={closeDropdown}
-                                >
-                                  Deposit
-                                </Link>{" "}
-                                <button
-                                  className="font-medium my-4 px-4 py-1 rounded border hover:bg-red-600 hover:text-white"
-                                  onClick={(e) => closeDropdown(e)}
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
+                      <InfoPopup
+                        selectedProduct={selectedProduct}
+                        accountBalance={accountBalance}
+                        buyProduct={buyProduct}
+                        closeDropdown={closeDropdown}
+                        count={numberOfItems}
+                        increaseNumberOfItems={increaseNumberOfItems}
+                        reduceNumberOfItems={reduceNumberOfItems}
+                        sizeError={sizeError}
+                      />
                     </>
                   )}
                 </div>

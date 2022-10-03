@@ -93,6 +93,19 @@ export const updateProduct = async (product) => {
   });
 };
 
+export const buyAProduct = async (product) => {
+  return await axios.post(
+    `${baseURL}/product/buy/${product.id}`,
+    { amount: product.amount },
+    {
+      headers: {
+        "Content-Type": "Application/JSON",
+        Authorization: `Bearer ${product.token}`,
+      },
+    }
+  );
+};
+
 export const deleteProduct = async (product) => {
   return await axios.delete(`${baseURL}/product/${product.id}`, {
     headers: {
@@ -104,7 +117,6 @@ export const deleteProduct = async (product) => {
 
 // Funds
 export const fundAccount = async (deposit) => {
-  console.log(deposit);
   return await axios.put(
     `${baseURL}/user/`,
     { deposit: deposit.amount },

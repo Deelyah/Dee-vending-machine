@@ -6,9 +6,8 @@ const LogOutOfAllDevices = ({ closePopup }) => {
   const clearActiveSessions = (e) => {
     e.preventDefault();
     logOutFromAllDevices({ username: username })
-      .then((res) => {
+      .then(() => {
         closePopup();
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
