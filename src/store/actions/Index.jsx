@@ -101,3 +101,27 @@ export const deleteProduct = async (product) => {
     },
   });
 };
+
+// Funds
+export const fundAccount = async (deposit) => {
+  console.log(deposit);
+  return await axios.put(
+    `${baseURL}/user/`,
+    { deposit: deposit.amount },
+    {
+      headers: {
+        "Content-Type": "Application/JSON",
+        Authorization: `Bearer ${deposit.token}`,
+      },
+    }
+  );
+};
+
+export const resetAccountBalance = async (token) => {
+  return await axios.post(`${baseURL}/user/reset`, "", {
+    headers: {
+      "Content-Type": "Application/JSON",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

@@ -12,7 +12,6 @@ const AllUsers = () => {
       .then((res) => {
         // dispatch({ type: "ALL_USERS", payload: res.data });
         setAllUsers(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

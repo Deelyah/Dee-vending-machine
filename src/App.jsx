@@ -14,6 +14,7 @@ import AddProduct from "./pages/products/AddProduct";
 import EditProduct from "./pages/products/EditProduct";
 import SellersRoute from "./components/SellersRoute";
 import VendingMachine from "./pages/VendingMachine";
+import Deposit from "./pages/Deposit";
 function App() {
   return (
     <div className="App">
@@ -29,6 +30,7 @@ function App() {
               <Route path="update-profile" element={<UpdateProfile />} />
               <Route path="all-users" element={<AllUsers />} />
               <Route path="vending-machine" element={<VendingMachine />} />
+              <Route path="deposit" element={<Deposit />} />
               <Route path="seller/*" element={<SellersRoute />}>
                 <Route path="my-products" element={<SellersProucts />} />
                 <Route path="edit-product/:id" element={<EditProduct />} />

@@ -1,27 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
 import menu from "../assets/menu.png";
 import cancel from "../assets/cancel.png";
-import { useState } from "react";
-import { deleteAccount } from "../store/actions/Index";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { deleteAccount, getUserProfile } from "../store/actions/Index";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const TheHeader = () => {
   let [dropdownIsVisible, setDropdownIsVisible] = useState(false);
-  const userId = useSelector((state) => state?.profile?.id);
+  const profile = useSelector((state) => state?.profile);
   const token = localStorage.getItem("token");
   const navigateTo = useNavigate();
-  const userRole = useSelector((state) => state?.profile?.role);
-  let deleteUserAccount = () => {
-    deleteAccount([userId, token])
+  const dispatch = useDispatch();
+  const deleteUserAccount = () => {
+    deleteAccount([profile?.id, token])
       .then(() => {
         localStorage.clear();
         toast.success("Account Deleted", {
           position: toast.POSITION.TOP_RIGHT,
         });
-        setTimeout(() => {
-          navigateTo("/register");
-        }, 1200);
+
+        navigateTo("/register");
       })
       .catch((e) => {
         toast.error(error.response.data.message, {
@@ -29,40 +28,49 @@ const TheHeader = () => {
         });
       });
   };
+  useEffect(() => {
+    getUserProfile(token).then((res) => {
+      dispatch({ type: "PROFILE", payload: res.data });
+    });
+  }, []);
 
   return (
-    <div className="fixed top-0 right-0 left-0 pt-9 px-8 bg-[#130F40]">
+    <div className="fixed top-0 right-0 left-0 py-3 md:pt-9 px-3 md:px-8 bg-[#130F40] ">
       <ToastContainer />
-      <div className="relative flex justify-start items-start w-full">
+
+      <div className="relative flex justify-start items-center w-full">
         <Link
           to="/"
-          className="text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+          className="text-white border rounded-md text-sm md:text-base px-3 py-2 border-transparent hover:border-gray-700"
         >
           Home
         </Link>
-        {userRole === "seller" ? (
+        {profile?.role === "seller" ? (
           <>
             <Link
               to="/my-account/seller/my-products"
-              className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+              className="ml-2 md:ml-5 text-white text-sm md:text-base border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
             >
-              {userRole ? "My Products" : ""}
+              {profile?.role ? "My Products" : ""}
             </Link>
             <Link
               to="/my-account/seller/add-product"
-              className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+              className="ml-2 md:ml-5 text-white text-sm md:text-base border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
             >
-              {userRole ? "Create new product" : ""}
+              {profile?.role ? "Create new product" : ""}
             </Link>
           </>
         ) : (
-          <Link
-            to="/my-account/vending-machine"
-            className="ml-5 text-white border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
-          >
-            {userRole ? "Start Shopping" : ""}
-          </Link>
+          <>
+            <Link
+              to="/my-account/vending-machine"
+              className="ml-2 md:ml-5 text-white text-sm md:text-base border rounded-md px-3 py-2 border-transparent hover:border-gray-700"
+            >
+              {profile?.role ? "Start Shopping" : ""}
+            </Link>
+          </>
         )}
+
         <div className="ml-auto">
           <button
             onClick={() => {
@@ -72,7 +80,7 @@ const TheHeader = () => {
             <img src={menu} alt="menu" />
           </button>
           {dropdownIsVisible && (
-            <ul className="bg-white absolute top-8 -right-5 rounded-md w-1/6">
+            <ul className="bg-white absolute top-8 right-0 md:-right-5 rounded-md w-2/3 md:w-1/6 z-90">
               <li className="flex justify-end pt-4 pr-4">
                 <button
                   className="p-2 hover:bg-[#13113f30] rounded"
